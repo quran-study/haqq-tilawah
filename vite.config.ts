@@ -25,6 +25,15 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,woff2,json,txt}'],
+        // Word data (7 MB) is cached as each surah is opened, or all at once on request
+        globIgnores: ['**/data/words/**'],
+        runtimeCaching: [
+          {
+            urlPattern: ({ url }) => url.pathname.includes('/data/words/'),
+            handler: 'StaleWhileRevalidate',
+            options: { cacheName: 'word-data' },
+          },
+        ],
       },
     }),
   ],

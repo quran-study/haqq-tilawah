@@ -27,9 +27,9 @@ Haqq Tilawah builds on the work of trusted projects. We credit each one and foll
 
 | Source | What it provides | Key terms |
 |---|---|---|
-| [Tanzil Project](https://tanzil.net) | Verified Arabic Quran text and metadata | CC BY-ND 3.0. The text must not be changed. Credit and link to Tanzil. |
-| Translations via [Tanzil](https://tanzil.net/trans/) | Translations of the meanings (starting with Sahih International) | Each translation has its own terms, checked before it is added. |
-| [Quranic Arabic Corpus](https://corpus.quran.com) *(planned)* | Word-by-word morphology: roots, lemmas, grammar | GNU GPL. The data file must not be changed. Credit and link to the Corpus, and keep its copyright notice. |
+| [Tanzil Project](https://tanzil.net) | Verified Arabic Quran text (Uthmani v1.1), the Simple Clean text used for search, and metadata | CC BY 3.0. The text must not be changed. Credit and link to Tanzil, and keep its copyright notice. |
+| Translations via [Tanzil](https://tanzil.net/trans/) | Saheeh International English translation | **Non-commercial use only**; other uses need permission from the translator or publisher. |
+| [Quranic Arabic Corpus](https://corpus.quran.com) | Word-by-word morphology (v0.4): parts, grammar, roots and lemmas | GNU GPL. The data file must not be changed. Credit and link to the Corpus, and keep its copyright notice. |
 | [Amiri Quran](https://www.amirifont.org) | Arabic typeface | SIL Open Font License |
 | [qurandev](https://github.com/qurandev) | The original ideas and research tools this app grew from | The author invites others to "take the idea, improve on it and host on your own site". |
 
@@ -40,10 +40,12 @@ See [ACKNOWLEDGEMENTS.md](ACKNOWLEDGEMENTS.md) for full details, or the Acknowle
 ## Roadmap
 
 - [x] Installable, offline-ready app shell
-- [ ] Quran reader with translation
-- [ ] Word by word: root, lemma and grammar for every word
-- [ ] Search by word, root or translation
-- [ ] Synonyms, themes and connections between words
+- [x] Quran reader with translation
+- [x] Word by word: parts, grammar, root and lemma for every word
+- [x] Search by Arabic text or English translation
+- [x] Explore roots and the words formed from them
+- [ ] Synonyms and themes (needs a source with clear permission to reuse)
+- [ ] More translations (each checked for its terms first)
 
 ## Running it locally
 
@@ -56,7 +58,7 @@ pnpm build     # build the production app into dist/
 pnpm preview   # serve the production build locally
 ```
 
-Every push to `main` is built and published to GitHub Pages automatically.
+`pnpm data` rebuilds the app's data from the unchanged source files in [`data/raw`](data/raw/README.md), checking that every ayah and every word lines up. Every push to `main` is built and published to GitHub Pages automatically.
 
 ## Contributing
 

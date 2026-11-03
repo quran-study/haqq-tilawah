@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { loadSurahIndex, type SurahInfo } from './data.ts'
+import OfflineWords from './OfflineWords.tsx'
 
 function matches(s: SurahInfo, query: string) {
   const q = query.trim().toLowerCase()
@@ -59,6 +60,7 @@ function SurahList() {
           </li>
         ))}
       </ol>
+      <OfflineWords />
     </section>
   )
 }

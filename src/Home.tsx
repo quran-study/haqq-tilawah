@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react'
 import { REPO_URL } from './config.ts'
 import { loadSurahIndex, type SurahIndex } from './data.ts'
 
-const ROADMAP = [
-  ['Read', 'The full Quran with translation, available offline. Ready now.'],
-  ['Word by word', 'Tap any word to see its root, lemma and grammar.'],
-  ['Search', 'Find ayahs by word, root or translation, in Arabic or English.'],
-  ['Explore', 'Synonyms, themes and connections between words across the Quran.'],
+const FEATURES = [
+  ['Read', '#/quran', 'The full Quran in Uthmani script with the Saheeh International translation, available offline.'],
+  ['Word by word', '#/surah/1', 'Tap any word in the reader to see its parts, grammar, root and lemma.'],
+  ['Search', '#/search', 'Find ayahs by Arabic text (vowel marks optional) or by English translation.'],
+  ['Explore roots', '#/roots', 'Browse all 1,642 roots and see every word formed from each one, and where it appears.'],
 ]
 
 function Home() {
@@ -54,12 +54,14 @@ function Home() {
       </section>
 
       <section>
-        <h2>What’s coming</h2>
+        <h2>What you can do</h2>
         <ul className="roadmap">
-          {ROADMAP.map(([title, text]) => (
+          {FEATURES.map(([title, href, text]) => (
             <li key={title}>
-              <strong>{title}</strong>
-              <span>{text}</span>
+              <a href={href}>
+                <strong>{title}</strong>
+                <span>{text}</span>
+              </a>
             </li>
           ))}
         </ul>

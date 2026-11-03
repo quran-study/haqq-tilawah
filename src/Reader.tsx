@@ -1,31 +1,39 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import AyahText from './AyahText.tsx'
 import {
+  ayahTokens,
+  bismillahHeading,
   loadSurah,
   loadSurahIndex,
-  toArabicDigits,
+  loadWords,
   type Surah,
   type SurahIndex,
+  type SurahWords,
+  type Token,
 } from './data.ts'
 import { ARABIC_SIZES, useSettings } from './settings.ts'
+import WordPanel from './WordPanel.tsx'
 
 type Props = {
   n: number
   ayah?: number
 }
 
-// Shows the Bismillah that Tanzil places at the start of ayah 1 as a heading,
-// as printed mushafs do. No words are dropped: ayah 1 shows the remainder.
-function splitBismillah(index: SurahIndex, surah: Surah) {
-  const first = surah.ayahs[0][0]
-  const prefix = `${index.bismillah} `
-  if (surah.n === 1 || !first.startsWith(prefix)) return { heading: undefined, firstAyah: first }
-  return { heading: index.bismillah, firstAyah: first.slice(prefix.length) }
+type Selection = { ayah: number; word: number }
+
+// Maps each Corpus word (0-based) to the displayed token positions (1-based) it covers
+function wordPositions(tokens: Token[], counts: number[]): number[][] {
+  const wordTokens = tokens.flatMap((t, i) => (t.word ? [i + 1] : []))
+  let next = 0
+  return counts.map((count) => wordTokens.slice(next, (next += count)))
 }
 
 function Reader({ n, ayah }: Props) {
   const [index, setIndex] = useState<SurahIndex>()
   const [surah, setSurah] = useState<Surah>()
+  const [words, setWords] = useState<SurahWords>()
   const [error, setError] = useState<string>()
+  const [selection, setSelection] = useState<Selection>()
   const [settings, setSettings] = useSettings()
 
   useEffect(() => {
@@ -35,18 +43,36 @@ function Reader({ n, ayah }: Props) {
         setSurah(s)
       })
       .catch((e: Error) => setError(e.message))
+    // Word data is optional: the reader works without it, just without tappable words
+    loadWords(n)
+      .then(setWords)
+      .catch(() => setWords(undefined))
   }, [n])
 
   useEffect(() => {
     if (surah && ayah) document.getElementById(`ayah-${ayah}`)?.scrollIntoView({ block: 'start' })
   }, [surah, ayah])
 
+  const layout = useMemo(() => {
+    if (!surah) return []
+    return surah.ayahs.map((_, i) => {
+      const tokens = ayahTokens(surah, i + 1)
+      const positions = words ? wordPositions(tokens, words.ayahs[i].map((w) => w[0])) : []
+      return { tokens, positions }
+    })
+  }, [surah, words])
+
+  const closePanel = useCallback(() => setSelection(undefined), [])
+
   if (error) return <p className="error">{error}</p>
   if (!index || !surah) return <p className="muted">Loading…</p>
 
   const info = index.surahs[n - 1]
-  const { heading, firstAyah } = splitBismillah(index, surah)
+  const heading = bismillahHeading(surah)
   const sizeIndex = ARABIC_SIZES.indexOf(settings.arabicSize)
+
+  const selected = selection && layout[selection.ayah - 1].positions[selection.word]
+  const selectedWord = selection && words?.ayahs[selection.ayah - 1][selection.word]
 
   return (
     <article className="reader">
@@ -71,6 +97,7 @@ function Reader({ n, ayah }: Props) {
           />{' '}
           Translation
         </label>
+        <span className="muted tap-hint">{words ? 'Tap any word' : ''}</span>
         <span className="size-buttons">
           <button
             type="button"
@@ -98,26 +125,28 @@ function Reader({ n, ayah }: Props) {
       )}
 
       <ol className="ayahs">
-        {surah.ayahs.map(([ar, en], i) => {
+        {surah.ayahs.map(([, en], i) => {
           const number = i + 1
+          const { tokens, positions } = layout[i]
+          const onWord = words
+            ? (pos: number) => {
+                const word = positions.findIndex((p) => p.includes(pos))
+                if (word >= 0) setSelection({ ayah: number, word })
+              }
+            : undefined
           return (
             <li
               key={number}
               id={`ayah-${number}`}
               className={number === ayah ? 'ayah-row highlighted' : 'ayah-row'}
             >
-              <p
-                className="ayah-ar"
-                lang="ar"
-                dir="rtl"
+              <AyahText
+                tokens={tokens}
+                ayah={number}
+                onWord={onWord}
+                selected={selection?.ayah === number && selected ? new Set(selected) : undefined}
                 style={{ fontSize: `${settings.arabicSize}rem` }}
-              >
-                {i === 0 ? firstAyah : ar}{' '}
-                <span className="ayah-end" aria-label={`Ayah ${number}`}>
-                  {'۝'}
-                  {toArabicDigits(number)}
-                </span>
-              </p>
+              />
               {settings.showTranslation && (
                 <p className="ayah-en">
                   <a className="ayah-ref" href={`#/surah/${n}/${number}`}>
@@ -132,20 +161,29 @@ function Reader({ n, ayah }: Props) {
       </ol>
 
       <nav className="reader-nav" aria-label="Surahs">
-        {n > 1 ? (
-          <a href={`#/surah/${n - 1}`}>← {index.surahs[n - 2].tr}</a>
-        ) : (
-          <span />
-        )}
+        {n > 1 ? <a href={`#/surah/${n - 1}`}>← {index.surahs[n - 2].tr}</a> : <span />}
         <a href="#/quran">All surahs</a>
         {n < 114 ? <a href={`#/surah/${n + 1}`}>{index.surahs[n].tr} →</a> : <span />}
       </nav>
 
       <p className="reader-credit">
         Arabic text: <a href="https://tanzil.net">Tanzil Project</a> (Uthmani, v1.1), unchanged.
-        Translation: Saheeh International via Tanzil, for non-commercial use.{' '}
+        Translation: Saheeh International via Tanzil, for non-commercial use. Word grammar:{' '}
+        <a href="https://corpus.quran.com">Quranic Arabic Corpus</a>.{' '}
         <a href="#/acknowledgements">Sources and terms</a>
       </p>
+
+      {selection && selectedWord && selected && (
+        <WordPanel
+          key={`${selection.ayah}:${selection.word}`}
+          surah={n}
+          ayah={selection.ayah}
+          index={selection.word + 1}
+          word={selectedWord}
+          text={selected.map((p) => layout[selection.ayah - 1].tokens[p - 1].text).join(' ')}
+          onClose={closePanel}
+        />
+      )}
     </article>
   )
 }

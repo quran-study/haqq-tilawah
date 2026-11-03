@@ -14,7 +14,7 @@ const SOURCES: Source[] = [
     name: 'Tanzil Project',
     url: 'https://tanzil.net',
     provides:
-      'The verified Arabic Quran text (Uthmani script, version 1.1) and Quran metadata such as surah names and ayah counts.',
+      'The verified Arabic Quran text (Uthmani script, version 1.1), the Simple Clean text used for searching, and Quran metadata such as surah names and ayah counts.',
     terms: [
       'Licensed under Creative Commons Attribution 3.0.',
       'Verbatim copies may be shared, but the text must not be changed. We never alter it.',
@@ -37,13 +37,15 @@ const SOURCES: Source[] = [
   {
     name: 'Quranic Arabic Corpus',
     url: 'https://corpus.quran.com',
-    provides: 'Word-by-word morphology: roots, lemmas and grammatical analysis.',
+    provides:
+      'Word-by-word morphology (version 0.4): the parts, grammar, root and lemma of every word, used for word details, roots and lemmas.',
     terms: [
       'Copyright © Kais Dukes, licensed under the GNU General Public License.',
-      'Verbatim copies may be shared, but the data file must not be changed.',
-      'May be used in any website or application if the Corpus is credited and linked, with its copyright notice kept.',
+      'Verbatim copies may be shared, but the data file must not be changed. We keep it unchanged and only read from it.',
+      'May be used in any website or application if the Corpus is credited and linked, with its copyright notice kept. Every word panel links to the word on corpus.quran.com.',
+      'The Corpus is based on an earlier edition of the Tanzil text (1.0.2); every word has been checked to line up with the text shown here.',
     ],
-    status: 'Planned',
+    status: 'In use',
   },
   {
     name: 'Amiri Quran font',
