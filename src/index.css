@@ -1,0 +1,254 @@
+:root {
+  --bg: #faf8f3;
+  --surface: #ffffff;
+  --text: #2b2a27;
+  --muted: #6b675e;
+  --border: #e6e1d6;
+  --accent: #14532d;
+  --accent-soft: #e7f0e9;
+  --gold: #a07a1c;
+  --planned-bg: #f3eddc;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --bg: #12140f;
+    --surface: #1b1e17;
+    --text: #e9e6dd;
+    --muted: #a5a091;
+    --border: #2e3228;
+    --accent: #7fc796;
+    --accent-soft: #1f3326;
+    --gold: #e9c46a;
+    --planned-bg: #2d2818;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme='dark'] {
+  --bg: #12140f;
+  --surface: #1b1e17;
+  --text: #e9e6dd;
+  --muted: #a5a091;
+  --border: #2e3228;
+  --accent: #7fc796;
+  --accent-soft: #1f3326;
+  --gold: #e9c46a;
+  --planned-bg: #2d2818;
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 17px/1.65 system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+#root {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+a {
+  color: var(--accent);
+}
+
+[lang='ar'] {
+  font-family: 'Amiri Quran', serif;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.25;
+}
+
+h1 {
+  font-size: 1.75rem;
+}
+
+h2 {
+  font-size: 1.3rem;
+  margin-top: 2.5rem;
+}
+
+.site-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.brand {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.brand [lang='ar'] {
+  color: var(--gold);
+  font-size: 1.2rem;
+  font-weight: 400;
+}
+
+nav {
+  display: flex;
+  gap: 18px;
+}
+
+nav a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+nav a[aria-current='page'] {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.hero {
+  margin: 32px 0;
+  padding: 32px 24px;
+  text-align: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+.ayah {
+  margin: 0 0 20px;
+  font-size: 1.9rem;
+  line-height: 2.3;
+}
+
+.translation {
+  margin: 0 auto 12px;
+  max-width: 34em;
+  font-style: italic;
+}
+
+.reference {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.roadmap {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  padding: 0;
+  list-style: none;
+}
+
+.roadmap li {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.roadmap span {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.callout {
+  margin-top: 2.5rem;
+  padding: 4px 24px 12px;
+  background: var(--accent-soft);
+  border-radius: 16px;
+}
+
+.callout h2 {
+  margin-top: 1.25rem;
+}
+
+.sources {
+  display: grid;
+  gap: 16px;
+}
+
+.source {
+  padding: 4px 20px 8px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.source header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.source h3 {
+  margin: 14px 0 0;
+  font-size: 1.05rem;
+}
+
+.source ul {
+  padding-left: 20px;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.status {
+  margin-top: 14px;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.status-used {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.status-planned {
+  background: var(--planned-bg);
+  color: var(--gold);
+}
+
+blockquote {
+  margin: 16px 0;
+  padding: 12px 20px;
+  border-left: 4px solid var(--gold);
+  background: var(--surface);
+  font-style: italic;
+}
+
+blockquote cite {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.9rem;
+  font-style: normal;
+}
+
+.site-footer {
+  margin-top: 48px;
+  padding: 20px 0 32px;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.9rem;
+}
