@@ -55,7 +55,7 @@ function Home() {
 
       <section>
         <h2>What you can do</h2>
-        <ul className="roadmap">
+        <ul className="features">
           {FEATURES.map(([title, href, text]) => (
             <li key={title}>
               <a href={href}>

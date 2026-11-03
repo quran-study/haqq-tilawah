@@ -6,7 +6,6 @@ type Source = {
   url: string
   provides: string
   terms: string[]
-  status: 'In use' | 'Planned'
 }
 
 const SOURCES: Source[] = [
@@ -21,7 +20,6 @@ const SOURCES: Source[] = [
       'May be used in any website or application if Tanzil is credited and linked, so users can keep track of updates.',
       'The copyright notice must be kept with the text and in files derived from it. We include it with the app’s data.',
     ],
-    status: 'In use',
   },
   {
     name: 'Saheeh International (via Tanzil)',
@@ -32,7 +30,6 @@ const SOURCES: Source[] = [
       'We show the translation unchanged and credit it by name. Each translation is checked before it is added.',
       'If you build on Haqq Tilawah for commercial use, you must get permission for translations or remove them.',
     ],
-    status: 'In use',
   },
   {
     name: 'Quranic Arabic Corpus',
@@ -45,14 +42,12 @@ const SOURCES: Source[] = [
       'May be used in any website or application if the Corpus is credited and linked, with its copyright notice kept. Every word panel links to the word on corpus.quran.com.',
       'The Corpus is based on an earlier edition of the Tanzil text (1.0.2); every word has been checked to line up with the text shown here.',
     ],
-    status: 'In use',
   },
   {
     name: 'Amiri Quran font',
     url: 'https://www.amirifont.org',
     provides: 'The typeface used to display the Arabic text.',
     terms: ['Licensed under the SIL Open Font License.'],
-    status: 'In use',
   },
 ]
 
@@ -77,9 +72,6 @@ function Acknowledgements() {
                 <h3>
                   <a href={s.url}>{s.name}</a>
                 </h3>
-                <span className={`status status-${s.status === 'In use' ? 'used' : 'planned'}`}>
-                  {s.status}
-                </span>
               </header>
               <p>{s.provides}</p>
               <ul>
@@ -96,7 +88,7 @@ function Acknowledgements() {
         <h2>Inspiration: qurandev</h2>
         <p>
           The ideas behind this app (offline browser tools for exploring roots,
-          words, synonyms and search) come from the{' '}
+          words and search) come from the{' '}
           <a href="https://github.com/qurandev">qurandev</a> research tools. Their
           author kindly wrote:
         </p>

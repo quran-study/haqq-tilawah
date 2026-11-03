@@ -7,7 +7,7 @@
   --accent: #14532d;
   --accent-soft: #e7f0e9;
   --gold: #a07a1c;
-  --planned-bg: #f3eddc;
+  --highlight-bg: #f3eddc;
   color-scheme: light;
 }
 
@@ -21,7 +21,7 @@
     --accent: #7fc796;
     --accent-soft: #1f3326;
     --gold: #e9c46a;
-    --planned-bg: #2d2818;
+    --highlight-bg: #2d2818;
     color-scheme: dark;
   }
 }
@@ -35,7 +35,7 @@
   --accent: #7fc796;
   --accent-soft: #1f3326;
   --gold: #e9c46a;
-  --planned-bg: #2d2818;
+  --highlight-bg: #2d2818;
   color-scheme: dark;
 }
 
@@ -147,7 +147,7 @@ nav a[aria-current='page'] {
   font-size: 0.9rem;
 }
 
-.roadmap {
+.features {
   display: grid;
   gap: 12px;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -155,7 +155,7 @@ nav a[aria-current='page'] {
   list-style: none;
 }
 
-.roadmap li {
+.features li {
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -165,7 +165,7 @@ nav a[aria-current='page'] {
   border-radius: 12px;
 }
 
-.roadmap span {
+.features span {
   color: var(--muted);
   font-size: 0.95rem;
 }
@@ -210,24 +210,6 @@ nav a[aria-current='page'] {
   padding-left: 20px;
   color: var(--muted);
   font-size: 0.95rem;
-}
-
-.status {
-  margin-top: 14px;
-  padding: 2px 10px;
-  border-radius: 999px;
-  font-size: 0.8rem;
-  font-weight: 600;
-}
-
-.status-used {
-  background: var(--accent-soft);
-  color: var(--accent);
-}
-
-.status-planned {
-  background: var(--planned-bg);
-  color: var(--gold);
 }
 
 blockquote {
@@ -466,7 +448,7 @@ blockquote cite {
 
 .ayah-ar .hit {
   border-radius: 6px;
-  background: var(--planned-bg);
+  background: var(--highlight-bg);
   color: var(--gold);
 }
 
@@ -743,7 +725,7 @@ select {
 
 mark {
   border-radius: 3px;
-  background: var(--planned-bg);
+  background: var(--highlight-bg);
   color: inherit;
 }
 
@@ -753,7 +735,7 @@ mark {
   background: var(--accent-soft);
 }
 
-.roadmap a {
+.features a {
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -761,7 +743,7 @@ mark {
   text-decoration: none;
 }
 
-.roadmap li:has(a):hover {
+.features li:has(a):hover {
   border-color: var(--accent);
 }
 

@@ -40,7 +40,7 @@ Haqq Tilawah stands on the work of others. We are grateful to every project belo
 ## qurandev — inspiration
 
 - **Website:** https://github.com/qurandev
-- The ideas behind this app (offline browser tools for exploring roots, words, synonyms and search) come from the qurandev research tools. Their author wrote in the project's [README](https://github.com/qurandev/qurandev/blob/87988bc708830a47662bf5917ee2b4cd1b2b4834/README):
+- The ideas behind this app (offline browser tools for exploring roots, words and search) come from the qurandev research tools. Their author wrote in the project's [README](https://github.com/qurandev/qurandev/blob/87988bc708830a47662bf5917ee2b4cd1b2b4834/README):
 
   > "These pages are research tools; not definitive resources. They have their quirks. The code could use some cleanup.
   > You are welcome to take the idea, improve on it and host on your own site."

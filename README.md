@@ -44,7 +44,6 @@ See [ACKNOWLEDGEMENTS.md](ACKNOWLEDGEMENTS.md) for full details, or the Acknowle
 - [x] Word by word: parts, grammar, root and lemma for every word
 - [x] Search by Arabic text or English translation
 - [x] Explore roots and the words formed from them
-- [ ] Synonyms and themes (needs a source with clear permission to reuse)
 - [ ] More translations (each checked for its terms first)
 
 ## Running it locally
