@@ -10,16 +10,24 @@ export type SurahInfo = {
 
 export type Sources = {
   text: string
-  translation: string
+  translations: string
   morphology: string
   notice: string
+}
+
+export type Translation = {
+  id: string
+  name: string
+  language: string
 }
 
 export type SurahIndex = {
   sources: Sources
   // Al-Fatihah 1:1; Tanzil includes it at the start of ayah 1 of every surah except 1 and 9
   bismillah: string
-  featured: { surah: number; ayah: number; ar: string; en: string }
+  // [translation name, text] for each translation
+  featured: { surah: number; ayah: number; ar: string; translations: [string, string][] }
+  translations: Translation[]
   surahs: SurahInfo[]
 }
 
@@ -28,8 +36,8 @@ export type Surah = {
   sources: Sources
   // True when ayah 1 starts with the Bismillah (its first 4 words), shown as a heading
   bismillah: boolean
-  // [Arabic, English] per ayah, verbatim from Tanzil
-  ayahs: [string, string][]
+  // [Arabic, ...translations in SurahIndex.translations order] per ayah, verbatim from Tanzil
+  ayahs: string[][]
 }
 
 // One Corpus segment: [Arabic form, part-of-speech tag, features]

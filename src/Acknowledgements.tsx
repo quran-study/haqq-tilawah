@@ -22,12 +22,13 @@ const SOURCES: Source[] = [
     ],
   },
   {
-    name: 'Saheeh International (via Tanzil)',
+    name: 'Translations (via Tanzil)',
     url: 'https://tanzil.net/trans/',
-    provides: 'English translation of the meanings of the Quran.',
+    provides:
+      'English translations of the meanings of the Quran: Saheeh International, and Abdullah Yusuf Ali’s translation.',
     terms: [
       'Tanzil’s translations are for non-commercial purposes only. Any other use needs permission from the translator or publisher.',
-      'We show the translation unchanged and credit it by name. Each translation is checked before it is added.',
+      'We show each translation unchanged and credit it by name. Each translation’s terms are checked before it is added.',
       'If you build on Haqq Tilawah for commercial use, you must get permission for translations or remove them.',
     ],
   },

@@ -136,9 +136,41 @@ nav a[aria-current='page'] {
 }
 
 .translation {
-  margin: 0 auto 12px;
+  margin: 0 auto 16px;
   max-width: 34em;
+}
+
+.translation blockquote {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
   font-style: italic;
+}
+
+.translation figcaption {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.translation-toggles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+}
+
+.translation-name {
+  display: block;
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.ayah-en + .ayah-en {
+  margin-top: 8px;
 }
 
 .reference {
@@ -459,7 +491,7 @@ blockquote cite {
 }
 
 .tap-hint {
-  flex: 1;
+  margin: 0;
   font-size: 0.85rem;
   text-align: center;
 }

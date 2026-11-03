@@ -3,7 +3,7 @@ import { REPO_URL } from './config.ts'
 import { loadSurahIndex, type SurahIndex } from './data.ts'
 
 const FEATURES = [
-  ['Read', '#/quran', 'The full Quran in Uthmani script with the Saheeh International translation, available offline.'],
+  ['Read', '#/quran', 'The full Quran in Uthmani script with the Saheeh International and Yusuf Ali translations, available offline.'],
   ['Word by word', '#/surah/1', 'Tap any word in the reader to see its parts, grammar, root and lemma.'],
   ['Search', '#/search', 'Find ayahs by Arabic text (vowel marks optional) or by English translation.'],
   ['Explore roots', '#/roots', 'Browse all 1,642 roots and see every word formed from each one, and where it appears.'],
@@ -26,12 +26,16 @@ function Home() {
             <p className="ayah" lang="ar" dir="rtl">
               {featured.ar}
             </p>
-            <p className="translation">“{featured.en}”</p>
+            {featured.translations.map(([name, text]) => (
+              <figure key={name} className="translation">
+                <blockquote>“{text}”</blockquote>
+                <figcaption>{name}</figcaption>
+              </figure>
+            ))}
             <p className="reference">
               <a href={`#/surah/${featured.surah}/${featured.ayah}`}>
                 Al-Baqarah {featured.surah}:{featured.ayah}
-              </a>{' '}
-              · Saheeh International
+              </a>
             </p>
           </>
         )}

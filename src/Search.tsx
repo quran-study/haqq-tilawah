@@ -11,6 +11,7 @@ import {
 } from './data.ts'
 import { spacedRoot } from './grammar.ts'
 import Occurrences from './Occurrences.tsx'
+import { useSettings } from './settings.ts'
 
 type Props = {
   query: string
@@ -20,6 +21,8 @@ type Results = {
   locs: number[]
   ayahCount: number
   englishMatch?: RegExp
+  // Translations searched, shown with the results
+  translations?: string[]
   roots: Root[]
 }
 
@@ -70,31 +73,42 @@ async function searchArabic(query: string): Promise<Results> {
 
 const escapeRegExp = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 
-async function searchEnglish(query: string): Promise<Results> {
+// Searches the translations the reader has chosen to show, or all of them if none
+async function searchEnglish(query: string, chosen: string[]): Promise<Results> {
   const index = await loadSurahIndex()
   const surahs = await Promise.all(index.surahs.map((s) => loadSurah(s.n)))
+  const ids = chosen.length ? chosen : index.translations.map((t) => t.id)
+  const columns = index.translations.flatMap((t, i) => (ids.includes(t.id) ? [i + 1] : []))
   const pattern = new RegExp(`\\b(${escapeRegExp(query.trim())})`, 'i')
   const locs: number[] = []
   for (const s of surahs) {
-    s.ayahs.forEach(([, en], i) => {
-      if (pattern.test(en)) locs.push(loc(s.n, i + 1, 0))
+    s.ayahs.forEach((row, i) => {
+      if (columns.some((c) => pattern.test(row[c]))) locs.push(loc(s.n, i + 1, 0))
     })
   }
-  return { locs, ayahCount: locs.length, englishMatch: new RegExp(pattern.source, 'gi'), roots: [] }
+  return {
+    locs,
+    ayahCount: locs.length,
+    englishMatch: new RegExp(pattern.source, 'gi'),
+    translations: ids,
+    roots: [],
+  }
 }
 
 function Search({ query }: Props) {
   const [input, setInput] = useState(query)
   const [results, setResults] = useState<Results & { query: string }>()
   const [error, setError] = useState<string>()
+  const [settings] = useSettings()
   const arabic = isArabic(query)
+  const chosen = settings.translations.join(',')
 
   useEffect(() => {
     if (!query.trim()) return
-    ;(arabic ? searchArabic(query) : searchEnglish(query))
+    ;(arabic ? searchArabic(query) : searchEnglish(query, chosen ? chosen.split(',') : []))
       .then((r) => setResults({ ...r, query }))
       .catch((e: Error) => setError(e.message))
-  }, [query, arabic])
+  }, [query, arabic, chosen])
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -121,8 +135,9 @@ function Search({ query }: Props) {
         </button>
       </form>
       <p className="muted search-help">
-        Arabic searches the Quran text (vowel marks are optional). English searches the Saheeh
-        International translation. To search by root, use <a href="#/roots">Roots</a>.
+        Arabic searches the Quran text (vowel marks are optional). English searches the
+        translations you have chosen to show in the reader. To search by root, use{' '}
+        <a href="#/roots">Roots</a>.
       </p>
 
       {error && <p className="error">{error}</p>}
@@ -149,6 +164,7 @@ function Search({ query }: Props) {
             key={current.query}
             locs={current.locs}
             byWord
+            showTranslations={current.translations}
             englishMatch={current.englishMatch}
           />
         </>

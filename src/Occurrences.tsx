@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import AyahText from './AyahText.tsx'
-import { ayahTokens, decodeLocation, loadSurah, type Surah } from './data.ts'
+import { ayahTokens, decodeLocation, loadSurah, loadSurahIndex, type Surah, type Translation } from './data.ts'
+import { useSettings } from './settings.ts'
+import Translations from './Translations.tsx'
 
 const PAGE = 20
 
@@ -10,6 +12,8 @@ type Props = {
   locs: number[]
   // When true, token positions count words only (pause marks skipped)
   byWord?: boolean
+  // Translations to show instead of the reader's choice (e.g. the ones a search matched)
+  showTranslations?: string[]
   // Highlights matching text in the translation
   englishMatch?: RegExp
 }
@@ -20,9 +24,17 @@ function highlightEnglish(text: string, match?: RegExp) {
 }
 
 // Ayahs containing the given words, with those words highlighted
-function Occurrences({ locs, byWord, englishMatch }: Props) {
+function Occurrences({ locs, byWord, showTranslations, englishMatch }: Props) {
   const [shown, setShown] = useState(PAGE)
   const [surahs, setSurahs] = useState<Map<number, Surah>>(new Map())
+  const [translations, setTranslations] = useState<Translation[]>([])
+  const [settings] = useSettings()
+
+  useEffect(() => {
+    loadSurahIndex()
+      .then((index) => setTranslations(index.translations))
+      .catch(() => undefined)
+  }, [])
 
   // Group word positions by ayah, keeping Quran order
   const ayahs = new Map<string, { surah: number; ayah: number; tokens: Set<number> }>()
@@ -33,6 +45,7 @@ function Occurrences({ locs, byWord, englishMatch }: Props) {
     ayahs.get(key)!.tokens.add(token)
   }
   const list = [...ayahs.values()]
+  const shownTranslations = showTranslations ?? settings.translations
   const visible = list.slice(0, shown)
   const needed = [...new Set(visible.map((a) => a.surah))].filter((s) => !surahs.has(s)).join(',')
 
@@ -68,7 +81,12 @@ function Occurrences({ locs, byWord, englishMatch }: Props) {
               {s && ayahText ? (
                 <>
                   <AyahText tokens={ayahText} ayah={ayah} highlight={highlight} />
-                  <p className="ayah-en">{highlightEnglish(s.ayahs[ayah - 1][1], englishMatch)}</p>
+                  <Translations
+                    row={s.ayahs[ayah - 1]}
+                    all={translations}
+                    shown={shownTranslations}
+                    highlight={(text) => highlightEnglish(text, englishMatch)}
+                  />
                 </>
               ) : (
                 <p className="muted">Loading…</p>

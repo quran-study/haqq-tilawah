@@ -57,9 +57,15 @@ function readSurahMetadata() {
 // hamza (Tanzil 1.1 sometimes writes ء as ـٔ, a tatweel carrying a hamza)
 const skeleton = (text) => text.replace(/[\u0621\u064B-\u065F\u0670\u06D6-\u06ED\u0640\s]/g, '')
 
+// Translations from Tanzil, in the order they are offered in the app
+const TRANSLATIONS = [
+  { id: 'en.sahih', name: 'Saheeh International', language: 'English' },
+  { id: 'en.yusufali', name: 'Yusuf Ali', translator: 'Abdullah Yusuf Ali', language: 'English' },
+]
+
 const quran = readAyahFile('quran-uthmani.txt')
 const simple = readAyahFile('quran-simple-clean.txt')
-const sahih = readAyahFile('en.sahih.txt')
+const translations = TRANSLATIONS.map((t) => ({ ...t, ...readAyahFile(`${t.id}.txt`) }))
 const surahs = readSurahMetadata()
 const corpus = readCorpus(join(rawDir, 'corpus/quranic-corpus-morphology-0.4.txt'))
 if (corpus.words.size !== TOTAL_AYAHS) fail(`Corpus has ${corpus.words.size} ayahs, expected ${TOTAL_AYAHS}`)
@@ -80,7 +86,7 @@ const displayText = (map, s, a) => {
 
 const sources = {
   text: 'Tanzil Quran Text (Uthmani, Version 1.1), Copyright (C) 2007-2026 Tanzil Project, CC BY 3.0. Changing the text is not allowed. https://tanzil.net',
-  translation: 'Saheeh International (en.sahih) via Tanzil.net, for non-commercial use. https://tanzil.net/trans/',
+  translations: `${TRANSLATIONS.map((t) => `${t.name} (${t.id})`).join(', ')} via Tanzil.net, for non-commercial use. https://tanzil.net/trans/`,
   morphology: 'Quranic Arabic Corpus (morphology, version 0.4), Copyright (C) 2011 Kais Dukes, GNU General Public License. https://corpus.quran.com',
   notice: 'See NOTICE.txt for the full copyright notices.',
 }
@@ -89,14 +95,14 @@ rmSync(outDir, { recursive: true, force: true })
 mkdirSync(join(outDir, 'surah'), { recursive: true })
 mkdirSync(join(outDir, 'words'), { recursive: true })
 
-// --- Quran text and translation, one file per surah ---
+// --- Quran text and translations, one file per surah ---
+// Each ayah is [Arabic, ...translations in TRANSLATIONS order]
 for (const surah of surahs) {
   const ayahs = []
   for (let a = 1; a <= surah.ayahs; a++) {
-    const ar = quran.ayahs.get(`${surah.n}:${a}`)
-    const en = sahih.ayahs.get(`${surah.n}:${a}`)
-    if (ar === undefined || en === undefined) fail(`missing ${surah.n}:${a}`)
-    ayahs.push([ar, en])
+    const row = [quran, ...translations].map((source) => source.ayahs.get(`${surah.n}:${a}`))
+    if (row.includes(undefined)) fail(`missing ${surah.n}:${a}`)
+    ayahs.push(row)
   }
   const bismillah = hasBismillah(surah.n, 1)
   writeFileSync(
@@ -211,16 +217,25 @@ writeFileSync(
 
 // --- Index and notices ---
 // Shown on the home page; the app's name comes from this ayah
-const featured = { surah: 2, ayah: 121, ar: quran.ayahs.get('2:121'), en: sahih.ayahs.get('2:121') }
+const featured = {
+  surah: 2,
+  ayah: 121,
+  ar: quran.ayahs.get('2:121'),
+  translations: translations.map((t) => [t.name, t.ayahs.get('2:121')]),
+}
 const bismillah = quran.ayahs.get('1:1')
 
-writeFileSync(join(outDir, 'surahs.json'), JSON.stringify({ sources, bismillah, featured, surahs }))
+const translationList = TRANSLATIONS.map(({ id, name, language }) => ({ id, name, language }))
+writeFileSync(
+  join(outDir, 'surahs.json'),
+  JSON.stringify({ sources, bismillah, featured, translations: translationList, surahs }),
+)
 writeFileSync(
   join(outDir, 'NOTICE.txt'),
   [
     quran.notice,
     simple.notice,
-    sahih.notice,
+    ...translations.map((t) => t.notice),
     'Translations from Tanzil are for non-commercial purposes only. If used otherwise, permission is needed from the translator or the publisher. See https://tanzil.net/trans/',
     corpus.notice,
   ].join('\n\n') + '\n',

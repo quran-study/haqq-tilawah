@@ -16,9 +16,9 @@ Haqq Tilawah stands on the work of others. We are grateful to every project belo
 ## Translations (via Tanzil)
 
 - **Website:** https://tanzil.net/trans/
-- **In use:** Saheeh International (English).
+- **In use:** Saheeh International (English) and Abdullah Yusuf Ali (English).
 - **Terms:** Tanzil states that its translations are for non-commercial purposes only. Any other use needs permission from the translator or the publisher.
-- We show the translation unchanged and credit it by name. **If you build on Haqq Tilawah for commercial use, you must get permission for the translation or remove it.**
+- We show each translation unchanged and credit it by name. **If you build on Haqq Tilawah for commercial use, you must get permission for the translations or remove them.**
 
 ## Quranic Arabic Corpus — word-by-word morphology
 

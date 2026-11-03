@@ -12,6 +12,7 @@ import {
   type Token,
 } from './data.ts'
 import { ARABIC_SIZES, useSettings } from './settings.ts'
+import Translations from './Translations.tsx'
 import WordPanel from './WordPanel.tsx'
 
 type Props = {
@@ -89,15 +90,25 @@ function Reader({ n, ayah }: Props) {
       </header>
 
       <div className="reader-tools" role="group" aria-label="Reading options">
-        <label>
-          <input
-            type="checkbox"
-            checked={settings.showTranslation}
-            onChange={(e) => setSettings({ ...settings, showTranslation: e.target.checked })}
-          />{' '}
-          Translation
-        </label>
-        <span className="muted tap-hint">{words ? 'Tap any word' : ''}</span>
+        <span className="translation-toggles">
+          {index.translations.map((t) => (
+            <label key={t.id}>
+              <input
+                type="checkbox"
+                checked={settings.translations.includes(t.id)}
+                onChange={(e) =>
+                  setSettings({
+                    ...settings,
+                    translations: e.target.checked
+                      ? index.translations.map((x) => x.id).filter((id) => id === t.id || settings.translations.includes(id))
+                      : settings.translations.filter((id) => id !== t.id),
+                  })
+                }
+              />{' '}
+              {t.name}
+            </label>
+          ))}
+        </span>
         <span className="size-buttons">
           <button
             type="button"
@@ -118,6 +129,8 @@ function Reader({ n, ayah }: Props) {
         </span>
       </div>
 
+      {words && <p className="muted tap-hint">Tap any word to see its grammar, root and lemma.</p>}
+
       {heading && (
         <p className="bismillah" lang="ar" dir="rtl">
           {heading}
@@ -125,7 +138,7 @@ function Reader({ n, ayah }: Props) {
       )}
 
       <ol className="ayahs">
-        {surah.ayahs.map(([, en], i) => {
+        {surah.ayahs.map((row, i) => {
           const number = i + 1
           const { tokens, positions } = layout[i]
           const onWord = words
@@ -147,14 +160,18 @@ function Reader({ n, ayah }: Props) {
                 selected={selection?.ayah === number && selected ? new Set(selected) : undefined}
                 style={{ fontSize: `${settings.arabicSize}rem` }}
               />
-              {settings.showTranslation && (
-                <p className="ayah-en">
-                  <a className="ayah-ref" href={`#/surah/${n}/${number}`}>
-                    {n}:{number}
-                  </a>{' '}
-                  {en}
-                </p>
-              )}
+              <Translations
+                row={row}
+                all={index.translations}
+                shown={settings.translations}
+                prefix={
+                  <>
+                    <a className="ayah-ref" href={`#/surah/${n}/${number}`}>
+                      {n}:{number}
+                    </a>{' '}
+                  </>
+                }
+              />
             </li>
           )
         })}
@@ -168,7 +185,8 @@ function Reader({ n, ayah }: Props) {
 
       <p className="reader-credit">
         Arabic text: <a href="https://tanzil.net">Tanzil Project</a> (Uthmani, v1.1), unchanged.
-        Translation: Saheeh International via Tanzil, for non-commercial use. Word grammar:{' '}
+        Translations: {index.translations.map((t) => t.name).join(' and ')} via Tanzil, for
+        non-commercial use. Word grammar:{' '}
         <a href="https://corpus.quran.com">Quranic Arabic Corpus</a>.{' '}
         <a href="#/acknowledgements">Sources and terms</a>
       </p>
