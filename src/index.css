@@ -252,3 +252,198 @@ blockquote cite {
   color: var(--muted);
   font-size: 0.9rem;
 }
+
+.muted {
+  color: var(--muted);
+}
+
+.error {
+  color: #b42318;
+}
+
+.button {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 10px 22px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--bg);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.filter {
+  width: 100%;
+  margin-bottom: 16px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+}
+
+.surah-list {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  padding: 0;
+  list-style: none;
+}
+
+.surah-list a {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  padding: 12px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.surah-list a:hover {
+  border-color: var(--accent);
+}
+
+.surah-number {
+  flex: none;
+  width: 2.2em;
+  height: 2.2em;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.surah-names {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.surah-names .muted {
+  font-size: 0.85rem;
+}
+
+.surah-ar {
+  font-size: 1.5rem;
+  color: var(--gold);
+}
+
+.reader-header {
+  margin-top: 24px;
+  text-align: center;
+}
+
+.reader-header h1 {
+  margin: 0;
+}
+
+.reader-header p {
+  margin: 4px 0;
+}
+
+.surah-ar-title {
+  font-size: 2.4rem;
+  color: var(--gold);
+}
+
+.reader-tools {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+  margin: 16px 0;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+  font-size: 0.95rem;
+}
+
+.size-buttons {
+  display: flex;
+  gap: 6px;
+}
+
+.size-buttons button {
+  min-width: 44px;
+  min-height: 36px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+}
+
+.size-buttons button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.bismillah {
+  margin: 24px 0 8px;
+  text-align: center;
+  font-size: 1.9rem;
+}
+
+.ayahs {
+  padding: 0;
+  list-style: none;
+}
+
+.ayah-row {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border);
+  scroll-margin-top: 64px;
+}
+
+.ayah-row.highlighted {
+  margin: 0 -12px;
+  padding: 16px 12px;
+  border-radius: 12px;
+  background: var(--accent-soft);
+}
+
+.ayah-ar {
+  margin: 0 0 10px;
+  line-height: 2.2;
+}
+
+.ayah-end {
+  color: var(--gold);
+  white-space: nowrap;
+}
+
+.ayah-en {
+  margin: 0;
+}
+
+.ayah-ref {
+  margin-right: 4px;
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.reader-nav {
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  margin: 24px 0;
+}
+
+.reader-credit {
+  color: var(--muted);
+  font-size: 0.85rem;
+}

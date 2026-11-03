@@ -1,28 +1,44 @@
+import { useEffect, useState } from 'react'
 import { REPO_URL } from './config.ts'
-
-// Al-Baqarah 2:121, verbatim from Tanzil (Uthmani) and Sahih International via Tanzil
-const AYAH_AR =
-  'ٱلَّذِينَ ءَاتَيْنَٰهُمُ ٱلْكِتَٰبَ يَتْلُونَهُۥ حَقَّ تِلَاوَتِهِۦٓ أُو۟لَٰٓئِكَ يُؤْمِنُونَ بِهِۦ ۗ وَمَن يَكْفُرْ بِهِۦ فَأُو۟لَٰٓئِكَ هُمُ ٱلْخَٰسِرُونَ'
-const AYAH_EN =
-  'Those to whom We have given the Book recite it with its true recital. They [are the ones who] believe in it. And whoever disbelieves in it - it is they who are the losers.'
+import { loadSurahIndex, type SurahIndex } from './data.ts'
 
 const ROADMAP = [
-  ['Read', 'The full Quran with translation, available offline once loaded.'],
+  ['Read', 'The full Quran with translation, available offline. Ready now.'],
   ['Word by word', 'Tap any word to see its root, lemma and grammar.'],
   ['Search', 'Find ayahs by word, root or translation, in Arabic or English.'],
   ['Explore', 'Synonyms, themes and connections between words across the Quran.'],
 ]
 
 function Home() {
+  const [featured, setFeatured] = useState<SurahIndex['featured']>()
+
+  useEffect(() => {
+    loadSurahIndex()
+      .then((index) => setFeatured(index.featured))
+      .catch(() => setFeatured(undefined))
+  }, [])
+
   return (
     <>
       <section className="hero">
-        <p className="ayah" lang="ar" dir="rtl">
-          {AYAH_AR}
-        </p>
-        <p className="translation">“{AYAH_EN}”</p>
-        <p className="reference">
-          Al-Baqarah 2:121 · Sahih International
+        {featured && (
+          <>
+            <p className="ayah" lang="ar" dir="rtl">
+              {featured.ar}
+            </p>
+            <p className="translation">“{featured.en}”</p>
+            <p className="reference">
+              <a href={`#/surah/${featured.surah}/${featured.ayah}`}>
+                Al-Baqarah {featured.surah}:{featured.ayah}
+              </a>{' '}
+              · Saheeh International
+            </p>
+          </>
+        )}
+        <p>
+          <a className="button" href="#/quran">
+            Start reading
+          </a>
         </p>
       </section>
 

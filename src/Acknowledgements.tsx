@@ -13,21 +13,24 @@ const SOURCES: Source[] = [
   {
     name: 'Tanzil Project',
     url: 'https://tanzil.net',
-    provides: 'The verified Arabic Quran text (Uthmani script) and Quran metadata.',
+    provides:
+      'The verified Arabic Quran text (Uthmani script, version 1.1) and Quran metadata such as surah names and ayah counts.',
     terms: [
-      'Licensed under Creative Commons BY-ND 3.0.',
+      'Licensed under Creative Commons Attribution 3.0.',
       'Verbatim copies may be shared, but the text must not be changed. We never alter it.',
       'May be used in any website or application if Tanzil is credited and linked, so users can keep track of updates.',
+      'The copyright notice must be kept with the text and in files derived from it. We include it with the app’s data.',
     ],
     status: 'In use',
   },
   {
-    name: 'Sahih International (via Tanzil)',
+    name: 'Saheeh International (via Tanzil)',
     url: 'https://tanzil.net/trans/',
     provides: 'English translation of the meanings of the Quran.',
     terms: [
-      'Translations on Tanzil carry their own terms, set by each translator or publisher.',
+      'Tanzil’s translations are for non-commercial purposes only. Any other use needs permission from the translator or publisher.',
       'We show the translation unchanged and credit it by name. Each translation is checked before it is added.',
+      'If you build on Haqq Tilawah for commercial use, you must get permission for translations or remove them.',
     ],
     status: 'In use',
   },
